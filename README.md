@@ -53,13 +53,13 @@ model = cnn_learner(img_data, models.resnet34, metrics=[accuracy, error_rate])
 
 We will train for 5 epochs:
 
-![](fastai_training.png)
+![](README_images/fastai_training.png)
 
 As we can see above by just running five epochs with the default setting our accuracy for this fine-grained classification task is around ~99.57%.
 
 We can also plot the confusion matrix:
 
-![](fastai_confusionMatrix.png)
+![](README_images/fastai_confusionMatrix.png)
 
 The model at work:
 
@@ -223,14 +223,14 @@ Epoch 021: valid_loss 0.2057 | num_tokens 10.27 | batch_size 9.993
 
 Graphing the evolution of the loss function:
 
-![](pytorch_lossFunctionThroughEpochs.png)
+![](README_images/pytorch_lossFunctionThroughEpochs.png)
 
 ## Getting captions
 
 Two scripts are provided to get captions from images: 
 
 * `getCaptionsForOneImage.py`: generates a side-by-side comparison of three nouns in the caption with their respective attention:
-![](pytorch_attention.jpeg)
+![](README_images/pytorch_attention.jpeg)
 
   To use it, run:
   ```
@@ -238,7 +238,7 @@ Two scripts are provided to get captions from images:
   ```
 
 * `getTextCaptionsForMultipleImages.py`: generates text captions for all images in a directory and stores them in a `.txt` file.
-![](pytorch_captions.png)
+![](README_images/pytorch_captions.png)
 
   To use it, run:
 
@@ -264,4 +264,4 @@ BLEU_4-gram = 31.5989
 
 Interpretation of BLEU:
 
-![](pytorch_interpretationBLEU.png)
+![](README_images/pytorch_interpretationBLEU.png)
