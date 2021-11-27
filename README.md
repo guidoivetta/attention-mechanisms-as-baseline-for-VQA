@@ -2,7 +2,9 @@
 
 `Text Mining 2021` `FAMAF` `UNC`
 
-`Guido  Ivetta` `Laura Alonso Alemany`
+Author: `Guido  Ivetta`
+
+Prof: `Laura Alonso Alemany`
 
 # Introduction
 
