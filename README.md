@@ -35,11 +35,11 @@ This approach uses `Transfer Learning` described from the fastai docs as:
 
 * Transfer learning is a technique where you use a model trained on a very large dataset (usually ImageNet in computer vision) and then adapt it to your own dataset. The idea is that it has learned to recognize many features on all of this data, and that you will benefit from this knowledge, especially if your dataset is small, compared to starting from a randomly initialized model. It has been proved in this article on a wide range of tasks that transfer learning nearly always give better results.
 
-* In practice, you need to change the last part of your model to be adapted to your own number of classes. Most convolutional models end with a few linear layers (a part we will call the head). The last convolutional layer will have analyzed features in the image that went through the model, and the job of the head is to convert those in predictions for each of our classes. In transfer learning we will keep all the convolutional layers (called the body or the backbone of the model) with their weights pretrained on ImageNet but will define a new head initialized randomly.
+  In practice, you need to change the last part of your model to be adapted to your own number of classes. Most convolutional models end with a few linear layers (a part we will call the head). The last convolutional layer will have analyzed features in the image that went through the model, and the job of the head is to convert those in predictions for each of our classes. In transfer learning we will keep all the convolutional layers (called the body or the backbone of the model) with their weights pretrained on ImageNet but will define a new head initialized randomly.
 
-* Then we will train the model we obtain in two phases: first we freeze the body weights and only train the head (to convert those analyzed features into predictions for our own data), then we unfreeze the layers of the backbone (gradually if necessary) and fine-tune the whole model (possibly using differential learning rates).
+  Then we will train the model we obtain in two phases: first we freeze the body weights and only train the head (to convert those analyzed features into predictions for our own data), then we unfreeze the layers of the backbone (gradually if necessary) and fine-tune the whole model (possibly using differential learning rates).
 
-* The cnn_learner factory method helps you to automatically get a pretrained model from a given architecture with a custom head that is suitable for your data.
+  The cnn_learner factory method helps you to automatically get a pretrained model from a given architecture with a custom head that is suitable for your data.
 
 The [Resnet34](https://models.roboflow.com/classification/resnet34) pre-trained model was used here as basis.
 
@@ -224,6 +224,27 @@ Epoch 021: valid_loss 0.2057 | num_tokens 10.27 | batch_size 9.993
 Graphing the evolution of the loss function:
 
 ![](pytorch_lossFunctionThroughEpochs.png)
+
+## Getting captions
+
+Two scripts are provided to get captions from images: 
+
+* `getCaptionsForOneImage.py`: generates a side-by-side comparison of three nouns in the caption with their respective attention:
+![](pytorch_attention.jpeg)
+
+  To use it, run:
+  ```
+  python getCaptionsForOneImage.py --checkpoint-path /content/drive/MyDrive/bla_copia/checkpoints_esp/show_attend_tell/checkpoint_best.pt --images-path /content/drive/MyDrive/bla_copia/IMAGES_TO_CAPTION/image
+  ```
+
+* `getTextCaptionsForMultipleImages.py`: generates text captions for all images in a directory and stores them in a `.txt` file.
+![](pytorch_captions.png)
+
+  To use it, run:
+
+  ```
+  python getTextCaptionsForMultipleImages.py --checkpoint-path /content/drive/MyDrive/bla_copia/checkpoints_esp/show_attend_tell/checkpoint_best.pt --images-path /content/drive/MyDrive/bla_copia/IMAGES_TO_CAPTION/image
+  ```
 
 ## BLEU score
 
