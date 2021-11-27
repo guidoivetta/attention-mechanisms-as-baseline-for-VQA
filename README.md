@@ -14,6 +14,8 @@ The expected output is a string in a natural format like:
 * `This PLANTNAME is perfectly healthy.`
 * etc.
 
+I have made a short [YouTube video](https://www.youtube.com/watch?v=PSrvPiCu0Y4&ab_channel=GuidoIvetta) explaining the process of making this project, and live-running the different models created.
+
 # Dataset
 
 A reduced version of the [PlantVillage dataset](https://www.kaggle.com/emmarex/plantdisease) was used for training. It was chosen because it classifies plant leaves images in categories of the format `PLANTNAME__DISEASENAME`.
