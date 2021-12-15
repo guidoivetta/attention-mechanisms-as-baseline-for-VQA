@@ -8,7 +8,7 @@ Prof: `Laura Alonso Alemany`
 
 # Introduction
 
-The goal of this project is to build a multimodal (vision and NLP) model to detect plants and their diseases by analyizing photographs.
+The goal of this project is to build a multimodal (vision and NLP) model to detect plants and their diseases by analyzing photographs.
 
 
 The expected output is a text string like:
