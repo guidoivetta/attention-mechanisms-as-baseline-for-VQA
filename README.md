@@ -1,6 +1,6 @@
-# Attention Mechanisms as Baseline for VQA
+# Attention Mechanisms for Visual Question Answering
 
-`Text Mining 2021` `FAMAF` `UNC`
+project for the Computer Science subject `Text Mining 2021`, `FAMAF` `UNC`
 
 Author: `Guido  Ivetta`
 
@@ -8,25 +8,26 @@ Prof: `Laura Alonso Alemany`
 
 # Introduction
 
-The goal of this project is to build a NLP model to detect plants and their diseases by analizing images of their leaves.
+The goal of this project is to build a multimodal (vision and NLP) model to detect plants and their diseases by analyizing photographs.
 
-The expected output is a string in a natural format like:
+
+The expected output is a text string like:
 
 * `This is an unhealthy PLANTNAME leaf with X disease.`
 * `This PLANTNAME is perfectly healthy.`
 * etc.
 
-I have made a short [YouTube video](https://www.youtube.com/watch?v=PSrvPiCu0Y4&ab_channel=GuidoIvetta) explaining the process of making this project, and live-running the different models created.
+I have made a short [YouTube video](https://www.youtube.com/watch?v=PSrvPiCu0Y4&ab_channel=GuidoIvetta) in Spanish explaining the process of making this project, and live-running the different models created for the task.
 
 # Dataset
 
-A reduced version of the [PlantVillage dataset](https://www.kaggle.com/emmarex/plantdisease) was used for training. It was chosen because it classifies plant leaves images in categories of the format `PLANTNAME__DISEASENAME`.
+A reduced version of the [PlantVillage dataset](https://www.kaggle.com/emmarex/plantdisease) was used for training. It was chosen because it provides labels for images of plant leaves in categories of the format `PLANTNAME__DISEASENAME`.
 
-This dataset contains an open access repository of images on plant health to enable the development of mobile disease diagnostics. The dataset contains 54, 309 images. The images span 14 crop species: `Apple`, `Blueberry`, `Cherry`, `Grape`, `Orange`, `Peach`, `Bell Pepper`, `Potato`, `Raspberry`, `Soybean`, `Squash`, `Strawberry`, and `Tomato`. It contains images of 17 fundal diseases, 4 bacterial diseases, 2 molds (oomycete) diseases, 2 viral diseases, and 1 disease caused by a mite. 12 crop species also have images of healthy leaves that are not visibly affected by a disease.
+This dataset contains an open access repository of images on plant health to enable the development of mobile disease diagnostics. The dataset contains 54, 309 images. The images span 14 crop species: `Apple`, `Blueberry`, `Cherry`, `Grape`, `Orange`, `Peach`, `Bell Pepper`, `Potato`, `Raspberry`, `Soybean`, `Squash`, `Strawberry`, and `Tomato`. It contains images of 17 fungal diseases, 4 bacterial diseases, 2 molds (oomycete) diseases, 2 viral diseases, and 1 disease caused by a mite. 12 crop species also have images of healthy leaves that are not visibly affected by a disease.
 
 # Approaches
 
-This repository shows two approaches to reaching this project's goal:
+This repository provides two approaches to reaching this project's goal:
 
 * Image classification with [fastai](https://www.fast.ai/) based on [this post](https://towardsdatascience.com/plant-disease-detection-web-application-using-fastai-b0c389b82371).
 * A PyTorch implementation of [Show and Tell: A Neural Image Caption Generator](https://arxiv.org/pdf/1411.4555.pdf) and [Show, Attend and Tell: Neural Image Caption Generation with Visual Attention](https://arxiv.org/pdf/1502.03044.pdf) based on [this repository](https://github.com/tangbinh/image-captioning).
@@ -35,7 +36,7 @@ This repository shows two approaches to reaching this project's goal:
 
 (See `fastai_image_classificator.ipynb` for code details)
 
-This approach uses `Transfer Learning` described from the fastai docs as:
+This approach is a classification approach, not a language generation one. It will try to classify images in one of the target classes, namely any possible combination of PLANTNAME__DISEASENAME. It  applies a Transfer Learning approach described from the fastai docs as:
 
 * Transfer learning is a technique where you use a model trained on a very large dataset (usually ImageNet in computer vision) and then adapt it to your own dataset. The idea is that it has learned to recognize many features on all of this data, and that you will benefit from this knowledge, especially if your dataset is small, compared to starting from a randomly initialized model. It has been proved in this article on a wide range of tasks that transfer learning nearly always give better results.
 
@@ -49,7 +50,8 @@ The [Resnet34](https://models.roboflow.com/classification/resnet34) pre-trained 
 
 ## Training
 
-To create the transfer learning model we will need to use the function `cnn_learner` that takes the data, network and the metrics . The metrics is just used to print out how the training is performing.
+To create the transfer learning model we will need to use the function cnn_learner that takes the training data for the target domain, the basis network trained in the source domain, and the metrics. The metrics are just used to print out how the training is performing.
+
 
 ```python
 model = cnn_learner(img_data, models.resnet34, metrics=[accuracy, error_rate])
@@ -65,6 +67,8 @@ We can also plot the confusion matrix:
 
 ![](README_images/fastai_confusionMatrix.png)
 
+We can see that the model has very few errors, with most of the classification in the diagonal of the confusion matrix.
+
 The model at work:
 
 ```python
@@ -79,11 +83,12 @@ output: "Pepper__bell___healthy"
 
 # The `PyTorch` approach
 
-(See [this repository](https://github.com/tangbinh/image-captioning) for code details)
+This is a language generation approach, more concretely, we aim to generate a caption that describes a given image. (See [this repository](https://github.com/tangbinh/image-captioning) for code details)
 
 ## Getting annotations
 
-The most labor-intensive part of this approach was building the correct [COCO style annotations](https://www.immersivelimit.com/tutorials/create-coco-annotations-from-scratch) from the PlantVillage Dataset.
+The most labor-intensive part of this approach was building the correct natural language [COCO style annotations](https://www.immersivelimit.com/tutorials/create-coco-annotations-from-scratch) from the classification labels found in the PlantVillage Dataset.
+
 
 First we split between `train`, `val`, and `test` datasets with 80%, 10%, and 10% of the dataset respectively:
 
@@ -252,7 +257,7 @@ Two scripts are provided to get captions from images:
 
 ## BLEU score
 
-Usually the BLEU score is used for evaluating the accuracy of machine-translation models. But we have used it here as a general guideline.
+Usually the BLEU score is used for evaluating the accuracy of machine-translation models, but also more generally for open-ended natural language tasks. We have used it here as a general, not precise, indicator of performance.
 
 The score was calculated for 4 different n-grams:
 
@@ -269,3 +274,7 @@ BLEU_4-gram = 31.5989
 Interpretation of BLEU:
 
 ![](README_images/pytorch_interpretationBLEU.png)
+
+Thus, the BLEU scores we obtained indicate that we are obtaining understandable to high-quality results at every level.
+
+This results are consistent with our record low `0.1598` of the loss function.
