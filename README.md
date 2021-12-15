@@ -1,6 +1,6 @@
 # Attention Mechanisms for Visual Question Answering
 
-project for the Computer Science subject `Text Mining 2021`, `FAMAF` `UNC`
+project for the Computer Science subject `Text Mining`, `2021 FAMAF UNC`
 
 Author: `Guido  Ivetta`
 
